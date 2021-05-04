@@ -6,6 +6,8 @@ LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
 RUN yum update -y && yum install -y \
     # Add the dnf plugins so we can enable PowerTools \
     dnf-plugins-core \
+    # Needed for installing cpuid and systemd-networkd inside an installroot \
+    epel-release \
     && yum clean all && \
     rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
 
@@ -18,13 +20,13 @@ RUN yum install -y \
     # Dependencies for building xen \
     checkpolicy gcc python38 python38-devel iasl ncurses-devel libuuid-devel glib2-devel \
     pixman-devel selinux-policy-devel yajl-devel systemd-devel \
-    glibc-devel.i686 glibc-devel \
+    glibc-devel.i686 glibc-devel flex bison wget \
     \
     # Dependencies for building qemu \
     git libfdt-devel zlib-devel bzip2 \
     \
     # Crucible build dependencies \
-    rpm-build squashfs-tools openssl-devel rsync \
+    rpm-build squashfs-tools openssl-devel rsync python2 \
     \
     # Dependencies for starting build as non-root user (see sudo script below) \
     sudo unzip \
