@@ -26,7 +26,7 @@ RUN yum install -y \
     git libfdt-devel zlib-devel bzip2 \
     \
     # Crucible build dependencies \
-    rpm-build squashfs-tools openssl-devel rsync python2 \
+    rpm-build squashfs-tools openssl-devel rsync python2 clang \
     \
     # Dependencies for starting build as non-root user (see sudo script below) \
     sudo unzip \
