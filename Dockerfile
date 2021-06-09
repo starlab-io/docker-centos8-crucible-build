@@ -26,7 +26,7 @@ RUN yum install -y \
     git libfdt-devel zlib-devel bzip2 \
     \
     # Crucible build dependencies \
-    rpm-build squashfs-tools openssl-devel rsync python2 \
+    rpm-build squashfs-tools openssl-devel rsync python2 clang \
     \
     # Dependencies for starting build as non-root user (see sudo script below) \
     sudo unzip \
@@ -58,6 +58,11 @@ RUN git clone --depth 1 --branch v5.1.0 git://git.qemu-project.org/qemu.git && \
 
 # Install python3 dependencies
 RUN pip3 install transient==0.15 behave==1.2.6 pyhamcrest==1.10.1
+
+# Install binary for reformating Gherkin feature files.
+RUN wget https://github.com/antham/ghokin/releases/download/v1.6.1/ghokin_linux_amd64 && \
+    chmod +x ghokin_linux_amd64 && \
+    mv ghokin_linux_amd64 /usr/bin/ghokin
 
 # Set python to be python3
 RUN alternatives --set python /usr/bin/python3
