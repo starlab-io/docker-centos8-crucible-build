@@ -48,7 +48,10 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
     rm rustup-install.sh && \
                             \
     # Install rustfmt / cargo fmt for testing
-    rustup component add rustfmt clippy
+    rustup component add rustfmt clippy && \
+    # Install grcov for coverage
+    cargo install grcov
+
 
 # Build and install qemu
 RUN git clone --depth 1 --branch v5.1.0 git://git.qemu-project.org/qemu.git && \
@@ -57,7 +60,7 @@ RUN git clone --depth 1 --branch v5.1.0 git://git.qemu-project.org/qemu.git && \
     make -j4 && make install
 
 # Install python3 dependencies
-RUN pip3 install transient==0.15 behave==1.2.6 pyhamcrest==1.10.1
+RUN pip3 install transient==0.15 behave==1.2.6 pyhamcrest==1.10.1 lcov_cobertura==1.6
 
 # Install binary for reformating Gherkin feature files.
 RUN wget https://github.com/antham/ghokin/releases/download/v1.6.1/ghokin_linux_amd64 && \
@@ -66,6 +69,21 @@ RUN wget https://github.com/antham/ghokin/releases/download/v1.6.1/ghokin_linux_
 
 # Set python to be python3
 RUN alternatives --set python /usr/bin/python3
+
+# Because lcov is not available in centos8 repos or eple-release, we install from source
+RUN git clone https://github.com/linux-test-project/lcov.git && cd lcov && \
+    git checkout v1.15 && \
+    make dist && \
+    yum install lcov-1.15-1.noarch.rpm -y && \
+    make check && \
+    cd .. && \
+    rm lcov -rf
+ 
+# The lcov_cobertura package is a python library and binary combined into one file, but is not
+# configured as such on pip, and therefore is not executable. We make it executable
+# and add to path in order to use it as a binary.
+RUN chmod +x /usr/local/lib/python3.8/site-packages/lcov_cobertura.py
+ENV PATH="/usr/local/lib/python3.8/site-packages:${PATH}"
 
 # Allow any user to have sudo access within the container
 ARG VER=1
