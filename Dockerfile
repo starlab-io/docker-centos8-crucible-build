@@ -23,7 +23,7 @@ RUN yum install -y \
     glibc-devel.i686 glibc-devel flex bison wget \
     \
     # Dependencies for building qemu \
-    git libfdt-devel zlib-devel bzip2 \
+    git libfdt-devel zlib-devel bzip2 ninja-build \
     \
     # Crucible build dependencies \
     rpm-build squashfs-tools openssl-devel rsync python2 clang \
@@ -54,7 +54,7 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
 
 
 # Build and install qemu
-RUN git clone --depth 1 --branch v5.1.0 git://git.qemu-project.org/qemu.git && \
+RUN git clone --depth 1 --branch release-6.0_igb_sriov https://github.com/starlab-io/qemu.git && \
     cd qemu && \
     ./configure --target-list=x86_64-softmmu && \
     make -j4 && make install
