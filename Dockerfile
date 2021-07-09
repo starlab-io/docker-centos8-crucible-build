@@ -36,6 +36,8 @@ RUN yum install -y \
     \
     # Dependiences for building Titanium libfortifs \
     execstack \
+    # For executing TUI behave tests in parallel. Temporary until better behave parallelism becomes available.
+    parallel \
     && yum clean all && \
     rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
 
