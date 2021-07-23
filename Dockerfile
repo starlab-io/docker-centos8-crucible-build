@@ -17,6 +17,9 @@ RUN yum config-manager --set-enabled powertools
 
 RUN yum install -y \
     \
+    # parallelized gzip \
+    pigz \
+    \
     # Dependencies for building xen \
     checkpolicy gcc python38 python38-devel iasl ncurses-devel libuuid-devel glib2-devel \
     pixman-devel selinux-policy-devel yajl-devel systemd-devel \
@@ -38,6 +41,9 @@ RUN yum install -y \
     execstack \
     && yum clean all && \
     rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
+
+# Use pigz versions of gzip binaries
+RUN  ln -s ../../bin/pigz /usr/local/bin/gzip && ln -s ../../bin/unpigz /usr/local/bin/gunzip
 
 ENV PATH=/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     CARGO_HOME=/usr/local/cargo \
