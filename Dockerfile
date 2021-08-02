@@ -39,6 +39,8 @@ RUN yum install -y \
     \
     # Dependiences for building Titanium libfortifs \
     execstack \
+    # For executing test commands in parallel \
+    parallel \
     && yum clean all && \
     rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
 
