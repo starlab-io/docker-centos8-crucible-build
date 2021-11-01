@@ -3,19 +3,19 @@ MAINTAINER Star Lab <info@starlab.io>
 LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
 
 # Install the dnf plugins prior to the general install step below
-RUN yum update -y && yum install -y \
+RUN dnf update -y && dnf install -y \
     # Add the dnf plugins so we can enable PowerTools \
     dnf-plugins-core \
     # Needed for installing cpuid and systemd-networkd inside an installroot \
     epel-release \
-    && yum clean all && \
-    rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
+    && dnf clean all && \
+    rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
 # Enable PowerTools repo so we can install some dev dependencies for building
 # xen/qemu/titanium
-RUN yum config-manager --set-enabled powertools
+RUN dnf config-manager --set-enabled powertools
 
-RUN yum install -y \
+RUN dnf install -y \
     \
     # parallelized gzip \
     pigz \
@@ -41,8 +41,8 @@ RUN yum install -y \
     execstack \
     # For executing test commands in parallel \
     parallel \
-    && yum clean all && \
-    rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
+    && dnf clean all && \
+    rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
 # Use pigz versions of gzip binaries
 RUN  ln -s ../../bin/pigz /usr/local/bin/gzip && ln -s ../../bin/unpigz /usr/local/bin/gunzip
@@ -82,11 +82,11 @@ RUN alternatives --set python /usr/bin/python3
 RUN git clone https://github.com/linux-test-project/lcov.git && cd lcov && \
     git checkout v1.15 && \
     make dist && \
-    yum install lcov-1.15-1.noarch.rpm -y && \
+    dnf install lcov-1.15-1.noarch.rpm -y && \
     make check && \
     cd .. && \
     rm lcov -rf
- 
+
 # The lcov_cobertura package is a python library and binary combined into one file, but is not
 # configured as such on pip, and therefore is not executable. We make it executable
 # and add to path in order to use it as a binary.
