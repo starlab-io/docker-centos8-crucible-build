@@ -41,6 +41,10 @@ RUN dnf install -y \
     execstack \
     # For executing test commands in parallel \
     parallel \
+    \
+    # For Crucible documentation
+    graphviz libxslt pandoc python38-pyyaml \
+    \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
@@ -109,6 +113,16 @@ RUN curl -L -o ${ZIP_FILE} "https://github.com/starlab-io/add-user-to-sudoers/re
 account    sufficient    pam_permit.so\n\
 session    sufficient    pam_permit.so\n\
 ' > /etc/pam.d/sudo
+
+# Install TexLive and required components for Crucible documentation
+RUN mkdir /root/tl && wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz -O /dev/stdout |tar -C /root/tl --strip-components=1 -zx  && \
+    cd /root/tl && (echo P | ./install-tl -scheme small && \
+        sed -i -e 's/instopt_adjustpath 0/instopt_adjustpath 1/' -e 's/instopt_letter 0/instopt_letter 1/'  texlive.profile && \
+        ./install-tl -profile texlive.profile) && \
+    cd - && \
+    rm -rf /root/tl && \
+    tlmgr install mdframed zref needspace totalcount seqsplit xpatch draftwatermark && \
+    pip3 install yamlordereddictloader texttable
 
 ENV LC_ALL=en_US.utf-8
 ENV LANG=en_US.utf-8
