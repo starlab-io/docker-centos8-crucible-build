@@ -58,7 +58,7 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
     # Install rustfmt / cargo fmt for testing
     rustup component add rustfmt clippy && \
     # Install grcov for coverage
-    cargo install grcov --version 0.8.0
+    cargo install grcov --version 0.8.0 --locked
 
 
 # Build and install qemu
