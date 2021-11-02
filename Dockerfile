@@ -44,7 +44,7 @@ ENV PATH=/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:
     RUSTUP_HOME=/etc/local/cargo/rustup
 
 RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
-    umask 020 && sh ./rustup-install.sh -y --default-toolchain 1.53.0-x86_64-unknown-linux-gnu && \
+    umask 020 && sh ./rustup-install.sh -y --default-toolchain 1.56.1-x86_64-unknown-linux-gnu && \
     rm rustup-install.sh && \
                             \
     # Install rustfmt / cargo fmt for testing
