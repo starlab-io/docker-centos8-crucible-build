@@ -3,19 +3,19 @@ MAINTAINER Star Lab <info@starlab.io>
 LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
 
 # Install the dnf plugins prior to the general install step below
-RUN yum update -y && yum install -y \
+RUN dnf update -y && dnf install -y \
     # Add the dnf plugins so we can enable PowerTools \
     dnf-plugins-core \
     # Needed for installing cpuid and systemd-networkd inside an installroot \
     epel-release \
-    && yum clean all && \
-    rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
+    && dnf clean all && \
+    rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
 # Enable PowerTools repo so we can install some dev dependencies for building
 # xen/qemu/titanium
-RUN yum config-manager --set-enabled powertools
+RUN dnf config-manager --set-enabled powertools
 
-RUN yum install -y \
+RUN dnf install -y \
     \
     # parallelized gzip \
     pigz \
@@ -41,8 +41,12 @@ RUN yum install -y \
     execstack \
     # For executing test commands in parallel \
     parallel \
-    && yum clean all && \
-    rm -rf /var/cache/yum/* /tmp/* /var/tmp/*
+    \
+    # For Crucible documentation
+    graphviz libxslt pandoc python38-pyyaml \
+    \
+    && dnf clean all && \
+    rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
 # Use pigz versions of gzip binaries
 RUN  ln -s ../../bin/pigz /usr/local/bin/gzip && ln -s ../../bin/unpigz /usr/local/bin/gunzip
@@ -58,7 +62,7 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
     # Install rustfmt / cargo fmt for testing
     rustup component add rustfmt clippy && \
     # Install grcov for coverage
-    cargo install grcov --version 0.8.0 --locked
+    cargo install grcov --version 0.8.4 --locked
 
 
 # Build and install qemu
@@ -82,11 +86,11 @@ RUN alternatives --set python /usr/bin/python3
 RUN git clone https://github.com/linux-test-project/lcov.git && cd lcov && \
     git checkout v1.15 && \
     make dist && \
-    yum install lcov-1.15-1.noarch.rpm -y && \
+    dnf install lcov-1.15-1.noarch.rpm -y && \
     make check && \
     cd .. && \
     rm lcov -rf
- 
+
 # The lcov_cobertura package is a python library and binary combined into one file, but is not
 # configured as such on pip, and therefore is not executable. We make it executable
 # and add to path in order to use it as a binary.
@@ -109,6 +113,16 @@ RUN curl -L -o ${ZIP_FILE} "https://github.com/starlab-io/add-user-to-sudoers/re
 account    sufficient    pam_permit.so\n\
 session    sufficient    pam_permit.so\n\
 ' > /etc/pam.d/sudo
+
+# Install TexLive and required components for Crucible documentation
+RUN mkdir /root/tl && wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz -O /dev/stdout |tar -C /root/tl --strip-components=1 -zx  && \
+    cd /root/tl && (echo P | ./install-tl -scheme small && \
+        sed -i -e 's/instopt_adjustpath 0/instopt_adjustpath 1/' -e 's/instopt_letter 0/instopt_letter 1/'  texlive.profile && \
+        ./install-tl -profile texlive.profile) && \
+    cd - && \
+    rm -rf /root/tl && \
+    tlmgr install mdframed zref needspace totalcount seqsplit xpatch draftwatermark && \
+    pip3 install yamlordereddictloader texttable
 
 ENV LC_ALL=en_US.utf-8
 ENV LANG=en_US.utf-8
