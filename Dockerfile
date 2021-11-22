@@ -45,6 +45,8 @@ RUN dnf install -y \
     # For Crucible documentation
     graphviz libxslt pandoc python38-pyyaml \
     \
+    # For latest grcov/openssl build:
+    perl-IPC-Cmd \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
