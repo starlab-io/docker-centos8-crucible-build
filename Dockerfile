@@ -62,7 +62,12 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
     # Install rustfmt / cargo fmt for testing
     rustup component add rustfmt clippy && \
     # Install grcov for coverage
-    cargo install grcov --version 0.8.4 --locked
+    cargo install grcov --version 0.8.4 --locked && \
+    cargo install cargo-deny --version 0.10.3 --locked && \
+    # cargo udeps requires nightly to be installed, but doesn't need to be used/default
+    rustup install nightly && \
+    rustup default 1.56.1-x86_64-unknown-linux-gnu && \
+    cargo install cargo-udeps --version 0.1.24 --locked
 
 
 # Build and install qemu
