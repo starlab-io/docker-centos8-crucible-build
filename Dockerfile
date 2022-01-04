@@ -79,7 +79,7 @@ RUN git clone --depth 1 --branch release-6.0_igb_sriov https://github.com/starla
     make -j4 && make install
 
 # Install python3 dependencies
-RUN pip3 install transient==0.15 behave==1.2.6 pyhamcrest==1.10.1 lcov_cobertura==1.6
+RUN pip3 install transient==0.24 behave==1.2.6 pyhamcrest==1.10.1 lcov_cobertura==1.6
 
 # Install binary for reformating Gherkin feature files.
 RUN wget https://github.com/antham/ghokin/releases/download/v1.6.1/ghokin_linux_amd64 && \
