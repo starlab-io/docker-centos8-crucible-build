@@ -1,4 +1,4 @@
-FROM centos:8.2.2004
+FROM centos:8.4.2105
 MAINTAINER Star Lab <info@starlab.io>
 LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
 
