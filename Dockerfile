@@ -47,6 +47,8 @@ RUN dnf install -y \
     \
     # For latest grcov/openssl build:
     perl-IPC-Cmd \
+    # For building guest images in CI:
+    e4fsprogs \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
