@@ -60,7 +60,7 @@ ENV PATH=/usr/local/cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:
     RUSTUP_HOME=/etc/local/cargo/rustup
 
 RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
-    umask 020 && sh ./rustup-install.sh -y --default-toolchain 1.56.1-x86_64-unknown-linux-gnu && \
+    umask 020 && sh ./rustup-install.sh -y --default-toolchain 1.58.0-x86_64-unknown-linux-gnu && \
     rm rustup-install.sh && \
                             \
     # Install rustfmt / cargo fmt for testing
@@ -70,7 +70,7 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
     cargo install cargo-deny --version 0.10.3 --locked && \
     # cargo udeps requires nightly to be installed, but doesn't need to be used/default
     rustup install nightly && \
-    rustup default 1.57.0-x86_64-unknown-linux-gnu && \
+    rustup default 1.58.0-x86_64-unknown-linux-gnu && \
     cargo install cargo-udeps --version 0.1.24 --locked
 
 
