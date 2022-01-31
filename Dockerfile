@@ -46,8 +46,13 @@ RUN dnf install -y \
     \
     # For latest grcov/openssl build:
     perl-IPC-Cmd \
+    \
     # For building guest images in CI:
     e4fsprogs xfsprogs \
+    \
+    # For building Xen with ocaml-implemented xenstore
+    ocaml ocaml-compiler-libs ocaml-runtime ocaml-findlib \
+    \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
