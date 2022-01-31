@@ -54,7 +54,7 @@ RUN dnf install -y \
     # For latest grcov/openssl build:
     perl-IPC-Cmd \
     # For building guest images in CI:
-    e4fsprogs \
+    e4fsprogs xfsprogs \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
@@ -76,7 +76,7 @@ RUN curl https://sh.rustup.rs -sSf > rustup-install.sh && \
     cargo install cargo-deny --version 0.10.3 --locked && \
     # cargo udeps requires nightly to be installed, but doesn't need to be used/default
     rustup install nightly && \
-    rustup default 1.58.0-x86_64-unknown-linux-gnu && \
+    rustup default 1.58.1-x86_64-unknown-linux-gnu && \
     cargo install cargo-udeps --version 0.1.24 --locked
 
 
