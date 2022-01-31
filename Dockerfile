@@ -2,6 +2,12 @@ FROM centos:8.2.2004
 MAINTAINER Star Lab <info@starlab.io>
 LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
 
+# Due to CentOS deprecation, change mirrorlist to the vault
+# https://github.com/CentOS/sig-cloud-instance-images/issues/190
+RUN find /etc/yum.repos.d/ -type f -exec sed -i 's/mirrorlist=/#mirrorlist=/g' {} + && \
+    find /etc/yum.repos.d/ -type f -exec sed -i 's/#baseurl=/baseurl=/g' {} + && \
+    find /etc/yum.repos.d/ -type f -exec sed -i 's/mirror.centos.org\/$contentdir\/$releasever/vault.centos.org\/8.2.2004/g' {} +
+
 # Install the dnf plugins prior to the general install step below
 RUN dnf update -y && dnf install -y \
     # Add the dnf plugins so we can enable PowerTools \
@@ -13,7 +19,7 @@ RUN dnf update -y && dnf install -y \
 
 # Enable PowerTools repo so we can install some dev dependencies for building
 # xen/qemu/titanium
-RUN dnf config-manager --set-enabled powertools
+RUN dnf config-manager --set-enabled PowerTools
 
 RUN dnf install -y \
     \
@@ -23,7 +29,7 @@ RUN dnf install -y \
     # Dependencies for building xen \
     checkpolicy gcc python38 python38-devel iasl ncurses-devel libuuid-devel glib2-devel \
     pixman-devel selinux-policy-devel yajl-devel systemd-devel \
-    glibc-devel.i686 glibc-devel flex bison wget \
+    glibc-devel.i686 glibc-devel flex bison wget gettext \
     \
     # Dependencies for building qemu \
     git libfdt-devel zlib-devel bzip2 ninja-build \
