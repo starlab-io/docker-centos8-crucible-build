@@ -29,7 +29,7 @@ RUN dnf install -y \
     # Dependencies for building xen \
     checkpolicy gcc python38 python38-devel iasl ncurses-devel libuuid-devel glib2-devel \
     pixman-devel selinux-policy-devel yajl-devel systemd-devel \
-    glibc-devel.i686 glibc-devel flex bison wget \
+    glibc-devel.i686 glibc-devel flex bison wget gettext \
     \
     # Dependencies for building qemu \
     git libfdt-devel zlib-devel bzip2 ninja-build \
