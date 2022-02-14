@@ -1,15 +1,8 @@
-FROM centos:8.4.2105
+FROM almalinux:8.4
 MAINTAINER Star Lab <info@starlab.io>
-LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
-
-# Due to CentOS deprecation, change mirrorlist to the vault
-# https://github.com/CentOS/sig-cloud-instance-images/issues/190
-RUN find /etc/yum.repos.d/ -type f -exec sed -i 's/mirrorlist=/#mirrorlist=/g' {} + && \
-    find /etc/yum.repos.d/ -type f -exec sed -i 's/#baseurl=/baseurl=/g' {} + && \
-    find /etc/yum.repos.d/ -type f -exec sed -i 's/mirror.centos.org\/$contentdir\/$releasever/vault.centos.org\/8.4.2105/g' {} +
 
 # Install the dnf plugins prior to the general install step below
-RUN dnf update -y && dnf install -y \
+RUN dnf install -y \
     # Add the dnf plugins so we can enable PowerTools \
     dnf-plugins-core \
     # Needed for installing cpuid and systemd-networkd inside an installroot \
