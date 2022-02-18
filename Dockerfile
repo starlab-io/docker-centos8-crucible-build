@@ -4,9 +4,9 @@ LABEL maintainer="Adam Schwalm <adam.schwalm@starlab.io>"
 
 # Due to CentOS deprecation, change mirrorlist to the vault
 # https://github.com/CentOS/sig-cloud-instance-images/issues/190
-RUN find /etc/yum.repos.d/ -type f -exec sed -i 's/mirrorlist=/#mirrorlist=/g' {} + && \
-    find /etc/yum.repos.d/ -type f -exec sed -i 's/#baseurl=/baseurl=/g' {} + && \
-    find /etc/yum.repos.d/ -type f -exec sed -i 's/mirror.centos.org\/$contentdir\/$releasever/vault.centos.org\/8.2.2004/g' {} +
+RUN find /etc/yum.repos.d/ -type f -exec sed -i 's@mirrorlist=@#mirrorlist=@g' {} + && \
+    find /etc/yum.repos.d/ -type f -exec sed -i 's@#baseurl=@baseurl=@g' {} + && \
+    find /etc/yum.repos.d/ -type f -exec sed -i 's@mirror.centos.org/$contentdir/$releasever@mirror.rackspace.com/centos-vault/8.2.2004@g' {} +
 
 # Install the dnf plugins prior to the general install step below
 RUN dnf update -y && dnf install -y \
