@@ -27,6 +27,9 @@ RUN dnf install -y \
     # Dependencies for building qemu \
     git libfdt-devel zlib-devel bzip2 ninja-build \
     \
+    # More modern compiler for xen/qemu \
+    gcc-toolset-11 \
+    \
     # Crucible build dependencies \
     rpm-build squashfs-tools openssl-devel rsync python2 clang \
     \
