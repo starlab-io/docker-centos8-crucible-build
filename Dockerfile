@@ -1,4 +1,4 @@
-FROM almalinux:8.4
+FROM almalinux:8.5
 MAINTAINER Star Lab <info@starlab.io>
 
 # Install the dnf plugins prior to the general install step below
