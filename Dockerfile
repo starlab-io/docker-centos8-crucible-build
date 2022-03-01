@@ -16,6 +16,9 @@ RUN dnf config-manager --set-enabled powertools
 
 RUN dnf install -y \
     \
+    # English locales \
+    glibc-langpack-en \
+    \
     # parallelized gzip \
     pigz \
     \
