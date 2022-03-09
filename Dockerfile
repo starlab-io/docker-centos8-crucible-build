@@ -59,6 +59,9 @@ RUN dnf install -y \
     # For building Xen with ocaml-implemented xenstore
     ocaml ocaml-compiler-libs ocaml-runtime ocaml-findlib \
     \
+    # for better signal handling in containers
+    tini \
+    \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
@@ -146,5 +149,5 @@ RUN mkdir /root/tl && wget https://mirror.ctan.org/systems/texlive/tlnet/install
 ENV LC_ALL=en_US.utf-8
 ENV LANG=en_US.utf-8
 
-ENTRYPOINT ["/usr/local/bin/startup_script"]
+ENTRYPOINT ["/usr/local/bin/startup_script", "/usr/bin/tini", "--"]
 CMD ["/bin/bash", "-l"]
