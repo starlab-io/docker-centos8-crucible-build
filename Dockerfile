@@ -63,7 +63,7 @@ RUN dnf install -y \
     tini \
     \
     # For testing the cli
-    bash-completions \
+    bash-completion \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
