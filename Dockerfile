@@ -62,6 +62,8 @@ RUN dnf install -y \
     # for better signal handling in containers
     tini \
     \
+    # For testing the cli
+    bash-completions \
     && dnf clean all && \
     rm -rf /var/cache/dnf/* /tmp/* /var/tmp/*
 
